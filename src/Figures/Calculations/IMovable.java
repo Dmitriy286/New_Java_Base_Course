@@ -1,5 +1,7 @@
 package Figures.Calculations;
 
+import Figures.Figure;
+
 public interface IMovable {
-    public void move(double factor);
+    public Figure move(int factor, int vector);
 }

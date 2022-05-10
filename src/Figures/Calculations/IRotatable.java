@@ -6,7 +6,7 @@ import Figures.Point;
 import java.util.ArrayList;
 
 public interface IRotatable {
-    public void rotate(double angle, boolean direction);
+    public Figure rotate(double angle, boolean direction);
     public ArrayList<Point> drawBoundingBox();
     public ArrayList<Point> findDiagonal();
     public Point findCentre();

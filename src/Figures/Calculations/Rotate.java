@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import static java.lang.Math.sin;
 
 public class Rotate implements IRotatable {
-    ArrayList<Point> pointsList = null;
-    Figure figure = null;
+    ArrayList<Point> pointsList;
+    Figure figure;
 
     public Rotate (Figure figure) {
         this.pointsList = figure.getPointsList();
         this.figure = figure;
     }
 
-    public void rotate(double angle, boolean direction) {
+    public Figure rotate(double angle, boolean direction) {
         String direct = "вправо";
         if (!direction) {
             direct = "влево";
@@ -30,6 +30,7 @@ public class Rotate implements IRotatable {
 
         System.out.println("Я - " + this.figure.getClass().getSimpleName() + ", развернутый на " + angle + " радиан " + direct + ".\n"
                 + this.figure);
+        return this.figure;
     }
 
     @Override
@@ -65,8 +66,8 @@ public class Rotate implements IRotatable {
         ArrayList<Point> diameterPointsArray = new ArrayList<Point>();
         int i = 0;
         double biggestLength = 0;
-        Point pointA = null;
-        Point pointB = null;
+        Point pointA = new Point();
+        Point pointB = new Point();
         for (var point: this.pointsList) {
             for (int j = i + 1; j < (this.pointsList.size()); j++) {
                 double length = Figure.getSideLength(point, this.pointsList.get(j));

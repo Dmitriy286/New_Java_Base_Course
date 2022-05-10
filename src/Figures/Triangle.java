@@ -1,12 +1,15 @@
 package Figures;
 
+import Figures.Calculations.IMovable;
+import Figures.Calculations.IRotatable;
+import Figures.Calculations.IScalable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Triangle extends Figure {
+public class Triangle extends Figure  implements IRotatable, IScalable, IMovable {
 
     public Triangle () {
         super();

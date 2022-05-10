@@ -1,5 +1,7 @@
 package Figures.Calculations;
 
+import Figures.Figure;
+
 public interface IScalable {
-    public void scale(double factor);
+    public Figure scale(double factor);
 }
