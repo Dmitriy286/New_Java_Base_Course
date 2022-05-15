@@ -135,30 +135,6 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
             return this;
         }
 
-    //новый вариант
-//    public void rotate (double angle, boolean direction){
-//        //поворот фигуры через поворот точек по формуле:
-//        // X'=Xo+(X1-Xo)∗cos(ϕ)−(Y1-Yo)∗sin(ϕ)
-//        // Y'=Yo +(X1-Xo)∗sin(ϕ)+(Y1-Yo)∗cos(ϕ)
-////        ArrayList <Point> buffer = this.pointsList;
-//        ArrayList <Point> newPointsList = new ArrayList<>();
-//        if (ang > 0 && ang < 360 && buffer.size() > 2){
-//            Point centre = this.findBarCentre();
-//            double xC = centre.getX();
-//            double yC = centre.getY();
-//            double centreX = findCentre().getX();
-//            double centreY = findCentre().getY();
-//            buffer.replaceAll( x -> {double a = x.getX() - xC; double b = x.getY() - yC;
-//                x.setX(xC + a * Math.cos(Math.toRadians(ang)) - b * Math.sin(Math.toRadians(ang)));
-//                x.setY(yC + a * Math.sin(Math.toRadians(ang)) + b * Math.cos(Math.toRadians(ang)));
-//                return x;});
-//            this.nPoint = buffer;
-//        }
-//        else if (buffer.size() == 2) System.out.println("Круг есть круг, что его крутить то!");
-//        else
-//            System.out.println("Ошибка ввода градусов!");
-//    }
-
 //    @Override
 //    public Figure rotate(double angle, boolean direction) {
 //        String direct = "вправо";

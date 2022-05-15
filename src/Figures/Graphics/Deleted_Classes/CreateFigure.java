@@ -1,4 +1,4 @@
-package Figures.Graphics;
+package Figures.Graphics.Deleted_Classes;
 
 import Figures.Circle;
 import Figures.Figure;

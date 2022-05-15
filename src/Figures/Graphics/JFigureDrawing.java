@@ -30,11 +30,12 @@ public class JFigureDrawing extends JPanel {
         if (figureList.size() > 0) {
             for (var figure : figureList) {
                 switch (figure.getColor()) {
+                    case null -> g.setColor(Color.BLACK);
                     case "Красный" -> g.setColor(Color.RED);
                     case "Синий" -> g.setColor(Color.BLUE);
                     case "Оранжевый" -> g.setColor(Color.ORANGE);
                     case "Голубой" -> g.setColor(Color.CYAN);
-                    default -> g.setColor(Color.BLACK);
+                    default -> g.setColor(Color.GREEN);
                 }
 
 //                double maxModulX = this.figureList.get(0).getPointsList().get(0).getX();

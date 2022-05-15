@@ -18,8 +18,7 @@ import java.util.ArrayList;
 public class MainJFrame extends JFrame {
     String path;
     JPanel leftBasePanel;
-
-    FigureCreator creator = new FigureCreator();
+    FigureCreator creator;
 
     ArrayList<Point> pointsList;
     ArrayList<Figure> figureJSONList;
@@ -42,8 +41,6 @@ public class MainJFrame extends JFrame {
     Figure newFigure;
     FigureDefining defineFigure;
 
-//    JFrame consoleFrame = new JFrame();
-
     UserConsole uc;
 
 
@@ -52,6 +49,7 @@ public class MainJFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
 
+        creator = new FigureCreator();
         listModel = new DefaultListModel();
 
         GridBagLayout gbl = new GridBagLayout();
@@ -137,9 +135,10 @@ public class MainJFrame extends JFrame {
 
         leftBox.createFigureButton.addActionListener(e -> {
             leftBasePanel.remove(leftBox);
-//            leftBasePanel.remove(uc);
             leftBasePanel.add(leftCreatingBox, BorderLayout.WEST);
-
+            uc.clearConsole();
+            System.out.println("Создайте фигуру");
+            uc.consolePrinting("Создайте фигуру");
             revalidate();
             repaint();
         });
@@ -189,10 +188,8 @@ public class MainJFrame extends JFrame {
         leftBox.chooseFiguresButton.addActionListener(e -> {
             choiceFigureButtonFlag = true;
             leftBasePanel.remove(leftBox);
-//            leftBasePanel.remove(uc);
             leftBasePanel.add(leftOperationsBox, BorderLayout.WEST);
-//            leftBasePanel.add(uc);
-//правильное обновление:
+
             revalidate();
             repaint();
         });
@@ -215,7 +212,6 @@ public class MainJFrame extends JFrame {
         });
 
         leftCreatingBox.createButton.addActionListener(e -> {
-//            newFigure = new CreateFigure(creatingPointsList(listModel)).newFigure();
             newFigure = creator.create(creatingPointsList(listModel));
             ArrayList<Figure> tempArrayList = new ArrayList<>();
             newFigure.setColor(leftCreatingBox.colorRadioButtons.setColor);
