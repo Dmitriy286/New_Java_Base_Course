@@ -53,7 +53,6 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
     }
 
 
-
     public String getColor() {
         return color;
     }
@@ -74,6 +73,15 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
            return pointsList.get(index + 1);
         }
     }
+
+//    public Point getNextPointTwo(Point point) {
+//        if (index == pointsList.size() - 1) {
+//            return pointsList.get(0);
+//        }
+//        else {
+//            return pointsList.get(index + 1);
+//        }
+//    }
 
     public static double getSideLength(Point one, Point two) {
         double x1 = one.getX();
@@ -111,26 +119,44 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
         square = Math.abs(firstSum - secondSum) / 2;
         return square;
     }
-
     @Override
-    public void rotate(double angle, boolean direction) {
-        String direct = "вправо";
-        if (!direction) {
-            direct = "влево";
+    public Figure rotate(double angle, boolean direction) {
+            ArrayList<Point> newPointsList = new ArrayList<>();
+            for (var point : this.pointsList) {
+                double centreX = findCentre().getX();
+                double centreY = findCentre().getY();
+                double x2 = point.getX();
+                double y2 = point.getY();
+
+                newPointsList.add(new Point(centreX + ((x2 - centreX) * Math.cos(angle) - (y2 - centreY) * Math.sin(angle)),
+                        centreY + ((x2 - centreX) * Math.sin(angle) + (y2 - centreY) * Math.cos(angle))));
+            }
+            this.setPointsList(newPointsList);
+            return this;
         }
 
-        ArrayList<Point> newPointsList= new ArrayList<Point>();
-        for (var point: this.pointsList) {
-            newPointsList.add(this.newCoordinatesCalculating(point, angle, direction));
-        }
-        this.setPointsList(newPointsList);
-
-        System.out.println("Я - " + this.getClass().getSimpleName() + ", развернутый на " + angle + " радиан " + direct + ".\n"
-                + this);
-    }
+//    @Override
+//    public Figure rotate(double angle, boolean direction) {
+//        String direct = "вправо";
+//        if (!direction) {
+//            direct = "влево";
+//        }
+//
+//        ArrayList<Point> newPointsList = new ArrayList<>();
+//        for (var point: this.pointsList) {
+//            newPointsList.add(this.newCoordinatesCalculating(point, angle, direction));
+//
+//        }
+////        this.pointsList = newPointsList;
+//        this.setPointsList(newPointsList);
+//
+//        System.out.println("Я - " + this.getClass().getSimpleName() + ", развернутый на " + angle + " радиан " + direct + ".\n"
+//                + this);
+//        return this;
+//    }
 
     @Override
-    public void scale(double factor) {
+    public Figure scale(double factor) {
         double xCentre = this.findCentre().getX();
         double yCentre = this.findCentre().getY();
         double xNew;
@@ -145,12 +171,43 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
 
         System.out.println("Я - " + this.getClass().getSimpleName() + ", увеличенный в " + factor + " раз " + ".\n"
                 + this);
+
+        return this;
     }
 
     @Override
-    public void move(double factor) {
+    public Figure move(int factor, int vector) {
+            ArrayList<Point> newPointsList = new ArrayList<>();
+            for (var point: this.pointsList) {
+                newPointsList.add(this.newMoveCoordinatesCalculating(point, factor, vector));
+            }
+            this.setPointsList(newPointsList);
 
+            return this;
+        }
+
+
+    public Point newMoveCoordinatesCalculating(Point point, int factor, int vector) {
+        Point newPoint = new Point();
+        if (vector == 1) {
+            newPoint = new Point(point.getX(), point.getY() + factor);
+        }
+
+        else if (vector == 2) {
+            newPoint = new Point(point.getX(), point.getY() - factor);
+        }
+
+        else if (vector == 3) {
+            newPoint = new Point(point.getX() - factor, point.getY());
+        }
+
+        else {
+            newPoint = new Point(point.getX() + factor, point.getY());
+        }
+
+        return newPoint;
     }
+
 
     @Override
     public ArrayList<Point> drawBoundingBox() {
@@ -222,13 +279,13 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
     }
 
     public Point newCoordinatesCalculating(Point point, double angle, boolean direction) {
-        double radius = this.getSideLength(findCentre(), point);
+        double radius = getSideLength(findCentre(), point);
 
 //        h = смещение точки по оси абсцисс (в - или в +)
 //        m = смещение точки по оси ординат
 
         double c = 2 * radius * sin(angle/2);
-        double h = (c * Math.sqrt(4 * radius * radius - c * c)) / 2 * radius;
+        double h = (c * Math.sqrt(4 * radius * radius - c * c)) / (2 * radius);
         double m = Math.sqrt(c * c - h * h);
         if (!direction) {
             h = -h; //todo как поменять знак?
@@ -237,4 +294,6 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
         Point newPoint = new Point(point.getX() + m, point.getY() + h);
         return newPoint;
     }
+
+
 }

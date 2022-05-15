@@ -1,21 +1,20 @@
 package Figures;
 
-import Figures.Calculations.Rotate;
 import Figures.Writer.JSON_Serialization;
-import Figures.Writer.Serialize;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class Main {
 
         public static void main(String[] args) throws IOException, ClassNotFoundException {
-            Point p1 = new Point(2.5, 2.2);
-            Point p2 = new Point(3.1, 3.9);
-            Point p3 = new Point(4, 4);
-            Point p4 = new axisPoint(0,5);
-            Point p5 = new Point(-1,-4);
+            Point p1 = new Point(30, 25);
+            Point p2 = new Point(40, 100);
+            Point p3 = new Point(70, 65);
+            Point p4 = new axisPoint(67,80);
+            Point p5 = new Point(-100,-50);
 //
 //            System.out.println(p1.toString()); //нет необходимости вызывать метод toString
 //            System.out.println(p2.toString());
@@ -198,13 +197,35 @@ public class Main {
 //
 //            Rotate rotate = new Rotate(triangle);
 //            rotate.rotate(1, true);
-            Figure triangle2 = new Triangle(new ArrayList<Point>(Arrays.asList(new Point(2, 1), new Point(1, 2), new Point(4, 3))));
-            System.out.println(triangle2.findCentre());
-            triangle2.scale(2);
+//            Figure triangle2 = new Triangle(new ArrayList<Point>(Arrays.asList(new Point(2, 1), new Point(1, 2), new Point(4, 3))));
+//            System.out.println(triangle2.findCentre());
+//            triangle2.scale(2);
+
+            Figure[] figArray = new Figure[2];
+            figArray[0] = triangle;
+            figArray[1] = pentangle;
+            JSON_Serialization jsnSer = new JSON_Serialization();
+//            jsnSer.serializeWithJSON(figArray, "JSON file_8.json");
+//            jsnSer.deserializeWithJSON("JSON file_8.json");
+
+            HashMap<String, Figure> figureMap = new HashMap<String, Figure>();
+            figureMap.put("1 figure", triangle);
+            figureMap.put("2 figure", pentangle);
+
+            jsnSer.mapSerialization(figureMap, "JSON file_map_2.json");
+            jsnSer.mapDeSerialization("JSON file_map_2.json");
 
 //            JSON_Serialization jsnSer = new JSON_Serialization();
-//            jsnSer.serializeWithJSON(figuresList, "JSON file_5.json");
-//            jsnSer.deserializeWithJSON("JSON file_5.json");
+////            jsnSer.serializeWithJSON(figuresList, "JSON file_5.json");
+////            jsnSer.deserializeWithJSON("JSON file_5.json");
+//
+//
+//            SerializedArrayList sal = new SerializedArrayList(figuresList);
+//            jsnSer.wrapperSerializeWithJSON(sal, "JSON file_4.json");
+//            jsnSer.wrapperDeserializeWithJSON("JSON file_4.json");
 
-    }
+
+
+        }
+
 }

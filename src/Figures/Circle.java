@@ -1,8 +1,13 @@
 package Figures;
 
+import Figures.Calculations.IMovable;
+import Figures.Calculations.IRotatable;
+import Figures.Calculations.IScalable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 
-public class Circle extends Figure{
+public class Circle extends Figure  implements IRotatable, IScalable, IMovable {
     double radius;
 
     public Circle () {
@@ -25,18 +30,21 @@ public class Circle extends Figure{
         return radius;
     }
 
+    @JsonIgnore
     public double getDiametr() {
         double diameter;
         diameter = this.radius * 2;
         return diameter;
     }
 
+    @JsonIgnore
     public double getCircumference() {
         double circumference;
         circumference = 2 * Math.PI * this.radius;
         return circumference;
     }
 
+    @JsonIgnore
     @Override
     public double getSquare() {
         double square;
@@ -44,9 +52,9 @@ public class Circle extends Figure{
         return square;
     }
 
-    @Override
-    public String toString() {
-    return "Привет, я " + getClass().getName() + " с точками: " + this.pointsList;
-    }
+//    @Override
+//    public String toString() {
+//    return "Привет, я " + getClass().getName() + " с точками: " + this.pointsList;
+//    }
 
 }

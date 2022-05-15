@@ -6,11 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="miglayout-swing" />
+        <module name="New_Java_Base_Course" />
         <module name="New Java Base Course" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="miglayout-swing" target="1.5" />
       <module name="New Java Base Course" target="17" />
+      <module name="New_Java_Base_Course" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
