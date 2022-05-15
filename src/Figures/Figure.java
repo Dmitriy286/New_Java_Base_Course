@@ -119,21 +119,45 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
         square = Math.abs(firstSum - secondSum) / 2;
         return square;
     }
-        @Override
+    @Override
     public Figure rotate(double angle, boolean direction) {
             ArrayList<Point> newPointsList = new ArrayList<>();
             for (var point : this.pointsList) {
-                double x1 = findCentre().getX();
-                double y1 = findCentre().getY();
+                double centreX = findCentre().getX();
+                double centreY = findCentre().getY();
                 double x2 = point.getX();
                 double y2 = point.getY();
 
-                newPointsList.add(new Point(x1 + (x2 - x1) * Math.cos(angle) - (y2 - y1) * Math.sin(angle),
-                        y1 + (x2 - x1) * Math.sin(angle) - (y2 - y1) * Math.cos(angle)));
+                newPointsList.add(new Point(centreX + ((x2 - centreX) * Math.cos(angle) - (y2 - centreY) * Math.sin(angle)),
+                        centreY + ((x2 - centreX) * Math.sin(angle) + (y2 - centreY) * Math.cos(angle))));
             }
             this.setPointsList(newPointsList);
             return this;
         }
+
+    //новый вариант
+//    public void rotate (double angle, boolean direction){
+//        //поворот фигуры через поворот точек по формуле:
+//        // X'=Xo+(X1-Xo)∗cos(ϕ)−(Y1-Yo)∗sin(ϕ)
+//        // Y'=Yo +(X1-Xo)∗sin(ϕ)+(Y1-Yo)∗cos(ϕ)
+////        ArrayList <Point> buffer = this.pointsList;
+//        ArrayList <Point> newPointsList = new ArrayList<>();
+//        if (ang > 0 && ang < 360 && buffer.size() > 2){
+//            Point centre = this.findBarCentre();
+//            double xC = centre.getX();
+//            double yC = centre.getY();
+//            double centreX = findCentre().getX();
+//            double centreY = findCentre().getY();
+//            buffer.replaceAll( x -> {double a = x.getX() - xC; double b = x.getY() - yC;
+//                x.setX(xC + a * Math.cos(Math.toRadians(ang)) - b * Math.sin(Math.toRadians(ang)));
+//                x.setY(yC + a * Math.sin(Math.toRadians(ang)) + b * Math.cos(Math.toRadians(ang)));
+//                return x;});
+//            this.nPoint = buffer;
+//        }
+//        else if (buffer.size() == 2) System.out.println("Круг есть круг, что его крутить то!");
+//        else
+//            System.out.println("Ошибка ввода градусов!");
+//    }
 
 //    @Override
 //    public Figure rotate(double angle, boolean direction) {
@@ -266,10 +290,10 @@ public abstract class Figure implements Serializable, IRotatable, IScalable, IMo
 
     @Override
     public Point findCentre() {
-        Point pointA = this.findDiagonal().get(0);
-        Point pointB = this.findDiagonal().get(1);
-//        Point pointA = this.drawBoundingBox().get(0);
-//        Point pointB = this.drawBoundingBox().get(1);
+//        Point pointA = this.findDiagonal().get(0);
+//        Point pointB = this.findDiagonal().get(1);
+        Point pointA = this.drawBoundingBox().get(0);
+        Point pointB = this.drawBoundingBox().get(1);
         double x;
         double y;
         x = (pointA.getX() + pointB.getX()) / 2;

@@ -1,36 +1,50 @@
 package Figures.Graphics;
 
-import Figures.Figure;
-
 import javax.swing.*;
-import java.util.ArrayList;
+import java.awt.*;
 
-public class UserConsole extends JPanel {
-//    JLabel userConsoleLabel;
-//    JLabel userConsoleLabel1;
-    JList userConsoleJList;
-    DefaultListModel listModel;
+public class UserConsole extends Box {
+    JTextArea textArea;
+    Font font;
+    Color color;
 
-    public UserConsole () {
-//        userConsoleLabel = new JLabel("Консоль:");
-//        userConsoleLabel1 = new JLabel("\n");
-        userConsoleJList = new JList();
-        listModel = new DefaultListModel();
+    public UserConsole (int axis) {
+        super(axis);
+        textArea = new JTextArea();
+        font = new Font("Serif", Font.BOLD, 12);
+        color = new Color(254, 238, 202);
 
-//        add(userConsoleLabel);
-//        add(userConsoleLabel1);
-        add(userConsoleJList);
+        testAreaFormat();
 
+        add(Box.createVerticalStrut(5));
+        add(textArea);
+        add(Box.createVerticalStrut(5));
     }
 
     public void consolePrinting(String message) {
         System.out.println(message);
-        userConsoleJList.setModel(listModel);
-        listModel.add(0, message);
+        textArea.append(message);
     }
 
     public void clearConsole() {
-        listModel.removeAllElements();
+        textArea.setText("");
+    }
+
+    public void testAreaFormat() {
+        int width = 100;
+        int height = 100;
+        Dimension dimension = new Dimension(width, height);
+
+        textArea.setEditable(false);
+        textArea.setFont(font);
+        textArea.setLineWrap(true);
+        textArea.setWrapStyleWord(true);
+        textArea.setForeground(Color.BLACK);
+        textArea.setBackground(color);
+
+        textArea.setMinimumSize(dimension);
+        textArea.setPreferredSize(dimension);
+        textArea.setMaximumSize(dimension);
     }
 
 }

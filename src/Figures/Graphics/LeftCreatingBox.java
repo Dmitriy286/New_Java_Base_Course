@@ -128,10 +128,10 @@ public class LeftCreatingBox extends Box implements ActionListener {
 
     public void setSizeAndFormatMethod(JComponent component) {
         int width = 100;
-        int height = 70;
+        int height = 60;
         if (component.getClass().equals(JTextField.class)) {
             width = 100;
-            height = 30;
+            height = 20;
         }
         if (component.getClass().equals(ColorRadioButtons.class)) {
             width = 100;

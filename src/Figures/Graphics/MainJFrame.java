@@ -1,5 +1,6 @@
 package Figures.Graphics;
 
+import Figures.FabricMethod.FigureCreator;
 import Figures.Figure;
 import Figures.Point;
 import Figures.Writer.FigureFileInfo;
@@ -18,6 +19,8 @@ public class MainJFrame extends JFrame {
     String path;
     JPanel leftBasePanel;
 
+    FigureCreator creator = new FigureCreator();
+
     ArrayList<Point> pointsList;
     ArrayList<Figure> figureJSONList;
     ArrayList<Figure> tempFigureList = new ArrayList<>();
@@ -25,8 +28,8 @@ public class MainJFrame extends JFrame {
     Figure changedFigure;
 
     boolean choiceFigureButtonFlag = false;
-
     MainLeftBox leftBox = new MainLeftBox(BoxLayout.Y_AXIS);
+
     LeftCreatingBox leftCreatingBox = new LeftCreatingBox(BoxLayout.Y_AXIS, this);
     LeftOperationsBox leftOperationsBox = new LeftOperationsBox(BoxLayout.Y_AXIS);
     LeftScalingBox leftScalingBox = new LeftScalingBox(BoxLayout.Y_AXIS);
@@ -39,24 +42,17 @@ public class MainJFrame extends JFrame {
     Figure newFigure;
     FigureDefining defineFigure;
 
-    JFrame consoleFrame = new JFrame();
+//    JFrame consoleFrame = new JFrame();
 
-    UserConsole uc = new UserConsole();
+    UserConsole uc;
 
 
     public MainJFrame () throws IOException {
         super("Как тебе такое, Илон Маск?");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 800);
-//        setLocation(400,100);
-//        setVisible(true);
-        consoleFrame.setSize(100,100);
-        consoleFrame.setTitle("Пользовательская консоль");
-        consoleFrame.setVisible(true);
-        consoleFrame.add(uc);
 
         listModel = new DefaultListModel();
-
 
         GridBagLayout gbl = new GridBagLayout();
         this.setLayout(gbl);
@@ -97,12 +93,26 @@ public class MainJFrame extends JFrame {
 
         gbl.setConstraints(leftBasePanel, constraints);
         getContentPane().add(leftBasePanel);
+
+        uc = new UserConsole(BoxLayout.Y_AXIS);
+
+//        uc.setVisible(true);
+//        uc.setMinimumSize(new Dimension((int) (leftBasePanel.getWidth() / 1.2), 100));
+//        uc.setPreferredSize(new Dimension((int) (leftBasePanel.getWidth() / 1.2), 100));
+//        uc.setMaximumSize(new Dimension((int) (leftBasePanel.getWidth() / 1.2), 100));
+
+
+        leftBasePanel.add(uc, BorderLayout.NORTH);
+        uc.consolePrinting("Бобро пожаловать!");
+
         leftBasePanel.add(leftBox, BorderLayout.CENTER);
 
         path = "Figure JSON file.json";
         figureJSONList = new ArrayList<>();
         FigureFileInfo info = new FigureFileInfo();
         if (info.isFileEmpty()) {
+            uc.clearConsole();
+            uc.consolePrinting("Фигур пока нет, создаю тестовую фигуру");
             System.out.println("Фигур пока нет, создаю тестовую фигуру");
             figureJSONList.add(new FigureList().triangle1);
             jsn.serializeWithJSON(figureJSONList, path);
@@ -122,10 +132,12 @@ public class MainJFrame extends JFrame {
         gbl.setConstraints(drawedFigures, constraints);
         getContentPane().add(drawedFigures);
 
+
 //кнопки на основной левой панели:
 
         leftBox.createFigureButton.addActionListener(e -> {
             leftBasePanel.remove(leftBox);
+//            leftBasePanel.remove(uc);
             leftBasePanel.add(leftCreatingBox, BorderLayout.WEST);
 
             revalidate();
@@ -148,6 +160,7 @@ public class MainJFrame extends JFrame {
             System.out.println(figureJSONList);
             System.out.println(figureJSONList.size());
             String str = Integer.toString(figureJSONList.size());
+            uc.clearConsole();
             uc.consolePrinting(str);
             uc.consolePrinting("Тест консоли");
             drawedFigures.repaintFigures(figureJSONList);
@@ -176,7 +189,9 @@ public class MainJFrame extends JFrame {
         leftBox.chooseFiguresButton.addActionListener(e -> {
             choiceFigureButtonFlag = true;
             leftBasePanel.remove(leftBox);
+//            leftBasePanel.remove(uc);
             leftBasePanel.add(leftOperationsBox, BorderLayout.WEST);
+//            leftBasePanel.add(uc);
 //правильное обновление:
             revalidate();
             repaint();
@@ -200,10 +215,13 @@ public class MainJFrame extends JFrame {
         });
 
         leftCreatingBox.createButton.addActionListener(e -> {
-            newFigure = new CreateFigure(creatingPointsList(listModel)).newFigure();
+//            newFigure = new CreateFigure(creatingPointsList(listModel)).newFigure();
+            newFigure = creator.create(creatingPointsList(listModel));
             ArrayList<Figure> tempArrayList = new ArrayList<>();
             newFigure.setColor(leftCreatingBox.colorRadioButtons.setColor);
-            System.out.println("По идее присвоился цвет и этот цвет: " + leftCreatingBox.colorRadioButtons.setColor);
+            uc.clearConsole();
+            System.out.println("Присвоился цвет: " + leftCreatingBox.colorRadioButtons.setColor);
+            uc.consolePrinting("Присвоился цвет: " + leftCreatingBox.colorRadioButtons.setColor);
             tempArrayList.add(newFigure);
             drawedFigures.repaintFigures(tempArrayList);
             listModel.removeAllElements();
@@ -237,12 +255,17 @@ public class MainJFrame extends JFrame {
                 if (choiceFigureButtonFlag) {
                     int x = e.getX() - drawedFigures.getWidth() / 2; //328 656
                     int y = drawedFigures.getHeight() / 2 - e.getY();
+                    uc.clearConsole();
+                    uc.consolePrinting("Координаты: " + x + "," + y);
                     System.out.println("Координаты: " + x + "," + y);
                     Point point = new Point(x, y);
-                    defineFigure = new FigureDefining(figureJSONList, point);
+                    defineFigure = new FigureDefining(figureJSONList, point, drawedFigures);
                     defineFigure.scanningFigures();
                     if (defineFigure.foundFigure.size() > 0) {
                         drawedFigures.repaintFigures(defineFigure.foundFigure);
+                        uc.clearConsole();
+                        uc.consolePrinting("В указанной точке находится: \n" +
+                                defineFigure.foundFigure.get(0).getClass().getSimpleName());
                         System.out.println("В указанной точке находится фигура: " +
                                 defineFigure.foundFigure.get(0));
 
@@ -266,6 +289,8 @@ public class MainJFrame extends JFrame {
 
         leftOperationsBox.scaleFigureButton.addActionListener(e -> {
             System.out.println("Тест кнопки масштабирование" + defineFigure.foundFigure);
+            uc.clearConsole();
+            uc.consolePrinting("Выбранная фигура: \n" + figureJSONList.get(defineFigure.index).getClass().getSimpleName());
             System.out.println("Выбранная фигура: " + figureJSONList.get(defineFigure.index));
             leftBasePanel.remove(leftOperationsBox);
             leftBasePanel.add(leftScalingBox, BorderLayout.WEST);
@@ -316,6 +341,8 @@ public class MainJFrame extends JFrame {
 
         leftOperationsBox.rotateFigureButton.addActionListener(e -> {
             System.out.println("Тест кнопки поворот" + defineFigure.foundFigure);
+            uc.clearConsole();
+            uc.consolePrinting("Выбранная фигура: \n" + figureJSONList.get(defineFigure.index).getClass().getSimpleName());
             System.out.println("Выбранная фигура: " + figureJSONList.get(defineFigure.index));
             leftBasePanel.remove(leftOperationsBox);
             leftBasePanel.add(leftRotatingBox, BorderLayout.WEST);
@@ -367,6 +394,8 @@ public class MainJFrame extends JFrame {
 
         leftOperationsBox.moveFigureButton.addActionListener(e -> {
             System.out.println("Тест кнопки перемещение" + defineFigure.foundFigure);
+            uc.clearConsole();
+            uc.consolePrinting("Выбранная фигура: \n" + figureJSONList.get(defineFigure.index).getClass().getSimpleName());
             System.out.println("Выбранная фигура: " + figureJSONList.get(defineFigure.index));
             leftBasePanel.remove(leftOperationsBox);
             leftBasePanel.add(leftMovingBox, BorderLayout.WEST);
