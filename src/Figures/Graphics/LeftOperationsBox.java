@@ -58,5 +58,6 @@ public class LeftOperationsBox extends Box {
         button.setMinimumSize(dimension);
         button.setPreferredSize(dimension);
         button.setMaximumSize(dimension);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 }

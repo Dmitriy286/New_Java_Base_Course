@@ -4,41 +4,23 @@ import Figures.Figure;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-///**
-// * Creates a <code>Box</code> that displays its components
-// * along the specified axis.
-// *
-// * @param axis can be {@link BoxLayout#X_AXIS},
-// *             {@link BoxLayout#Y_AXIS},
-// *             {@link BoxLayout#LINE_AXIS} or
-// *             {@link BoxLayout#PAGE_AXIS}.
-// * @throws AWTError if the <code>axis</code> is invalid
-// * @see #createHorizontalBox
-// * @see #createVerticalBox
-// */
-
-
-public class LeftCreatingBox extends Box implements ActionListener {
-    JLabel coordinateXLabel = new JLabel("Координата X:");
-    JTextField coordinateXTextField = new JTextField();
-    JLabel coordinateYLabel = new JLabel("Координата Y:");
-    JTextField coordinateYTextField = new JTextField();
-    JLabel pointsListLabel = new JLabel("Список точек:");
-    JList pointList = new JList();
+public class LeftCreatingBox extends Box {
+    JLabel coordinateXLabel;
+    JTextField coordinateXTextField;
+    JLabel coordinateYLabel;
+    JTextField coordinateYTextField;
+    JLabel pointsListLabel;
+    JList pointList;
     ColorRadioButtons colorRadioButtons;
 
-    static String redString = "Красный";
+    JButton plusButton;
+    JButton minusButton;
+    JButton createButton;
+    JButton saveButton;
+    JButton stepBackButton;
 
-    JButton plusButton = new JButton("+");
-    JButton minusButton = new JButton("-");
-    JButton createButton = new JButton("Создать");
-    JButton saveButton = new JButton("Сохранить");
-    JButton stepBackButton = new JButton("Назад");
-
-    JScrollPane listScroller = new JScrollPane(pointList);
+    JScrollPane listScroller;
 
     int betweenSpace = 5;
 
@@ -49,52 +31,48 @@ public class LeftCreatingBox extends Box implements ActionListener {
         super(axis);
         this.parent = parent;
         this.parentFigure = parent.getNewFigure();
+
         createVerticalBox();
 
-//
-//        coordinateXLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        coordinateXTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        coordinateYLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        coordinateYTextField.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        pointsListLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        pointList.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        plusButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        createButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        saveButton.setAlignmentX(Component.LEFT_ALIGNMENT);
-//        stepBackButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        coordinateXLabel = new JLabel("Координата X:");
+        coordinateXTextField = new JTextField();
+        coordinateYLabel = new JLabel("Координата Y:");
+        coordinateYTextField = new JTextField();
+        pointsListLabel = new JLabel("Список точек:");
+        pointList = new JList();
 
-//        add(Box.createVerticalStrut(betweenSpace));
+        plusButton = new JButton("+");
+        minusButton = new JButton("-");
+        createButton = new JButton("Создать");
+        saveButton = new JButton("Сохранить");
+        stepBackButton = new JButton("Назад");
 
-//        coordinateXLabel.setMinimumSize(new Dimension(100, 30));
-//        coordinateXLabel.setPreferredSize(new Dimension(100, 30));
-//        coordinateXLabel.setMaximumSize(new Dimension(100, 30));
+        listScroller = new JScrollPane(pointList);
+
+//        setAlignmentX(Component.CENTER_ALIGNMENT);
+//        setAlignmentX(Component.TOP_ALIGNMENT);
+
+        setSizeAndFormatMethod(coordinateXLabel);
         add(coordinateXLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
         setSizeAndFormatMethod(coordinateXTextField);
-//        coordinateXTextField.setMinimumSize(new Dimension(100, 30));
-//        coordinateXTextField.setPreferredSize(new Dimension(100, 30));
-//        coordinateXTextField.setMaximumSize(new Dimension(100, 30));
         add(coordinateXTextField);
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(coordinateYLabel);
         add(coordinateYLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
         setSizeAndFormatMethod(coordinateYTextField);
-//        coordinateYTextField.setMinimumSize(new Dimension(100, 30));
-//        coordinateYTextField.setPreferredSize(new Dimension(100, 30));
-//        coordinateYTextField.setMaximumSize(new Dimension(100, 30));
         add(coordinateYTextField);
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(pointsListLabel);
         add(pointsListLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
-//        setSizeAndFormatMethod(pointList);
-//        pointList.setVisibleRowCount(7);
         setSizeAndFormatMethod(listScroller);
-//        listScroller.setPreferredSize(new Dimension(100, 80));
         add(listScroller);
 
         colorRadioButtons = new ColorRadioButtons(parentFigure);
@@ -122,14 +100,16 @@ public class LeftCreatingBox extends Box implements ActionListener {
         add(Box.createVerticalStrut(betweenSpace));
         setSizeAndFormatMethod(stepBackButton);
         add(stepBackButton);
-
-//        add(Box.createVerticalStrut(betweenSpace));
     }
 
     public void setSizeAndFormatMethod(JComponent component) {
         int width = 100;
         int height = 60;
         if (component.getClass().equals(JTextField.class)) {
+            width = 100;
+            height = 20;
+        }
+        if (component.getClass().equals(JLabel.class)) {
             width = 100;
             height = 20;
         }
@@ -141,17 +121,7 @@ public class LeftCreatingBox extends Box implements ActionListener {
         component.setMinimumSize(dimension);
         component.setPreferredSize(dimension);
         component.setMaximumSize(dimension);
-        component.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-//        if (component.getClass().equals(JList.class)) {
-//            JList jlist = (JList)component;
-//            component.setVisibleRowCount(7);
-//        }
-//    button.setMaximumSize(new Dimension(Short.MAX_VALUE, Short.MAX_VALUE));
+        component.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
 }

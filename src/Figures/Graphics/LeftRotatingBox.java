@@ -3,19 +3,6 @@ package Figures.Graphics;
 import javax.swing.*;
 import java.awt.*;
 
-///**
-// * Creates a <code>Box</code> that displays its components
-// * along the specified axis.
-// *
-// * @param axis can be {@link BoxLayout#X_AXIS},
-// *             {@link BoxLayout#Y_AXIS},
-// *             {@link BoxLayout#LINE_AXIS} or
-// *             {@link BoxLayout#PAGE_AXIS}.
-// * @throws AWTError if the <code>axis</code> is invalid
-// * @see #createHorizontalBox
-// * @see #createVerticalBox
-// */
-
 public class LeftRotatingBox extends Box {
     JLabel rotateAngleLabel = new JLabel("Угол в радианах:");
     JTextField rotateAngleTextField = new JTextField();
@@ -34,6 +21,7 @@ public class LeftRotatingBox extends Box {
         createVerticalBox();
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(rotateAngleLabel);
         add(rotateAngleLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
@@ -41,6 +29,7 @@ public class LeftRotatingBox extends Box {
         add(rotateAngleTextField);
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(enteredRotateAngleLabel);
         add(enteredRotateAngleLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
@@ -50,6 +39,7 @@ public class LeftRotatingBox extends Box {
         add(rotateAngleJList);
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(rotateVectorLabel);
         add(rotateVectorLabel);
 
         rotateRadioButtons = new RotateRadioButton();
@@ -78,6 +68,10 @@ public class LeftRotatingBox extends Box {
             width = 100;
             height = 30;
         }
+        if (component.getClass().equals(JLabel.class)) {
+            width = 100;
+            height = 20;
+        }
         if (component.getClass().equals(RotateRadioButton.class)) {
             width = 100;
             height = 40;
@@ -86,7 +80,7 @@ public class LeftRotatingBox extends Box {
         component.setMinimumSize(dimension);
         component.setPreferredSize(dimension);
         component.setMaximumSize(dimension);
-        component.setAlignmentX(Component.LEFT_ALIGNMENT);
+        component.setAlignmentX(Component.CENTER_ALIGNMENT);
 
     }
 

@@ -32,6 +32,7 @@ public class LeftScalingBox extends Box {
         createVerticalBox();
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(scaleFactorLabel);
         add(scaleFactorLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
@@ -39,6 +40,7 @@ public class LeftScalingBox extends Box {
         add(scaleFactorTextField);
 
         add(Box.createVerticalStrut(betweenSpace));
+        setSizeAndFormatMethod(enteredScaleFactorLabel);
         add(enteredScaleFactorLabel);
 
         add(Box.createVerticalStrut(betweenSpace));
@@ -67,11 +69,15 @@ public class LeftScalingBox extends Box {
             width = 100;
             height = 30;
         }
+        if (component.getClass().equals(JLabel.class)) {
+            width = 100;
+            height = 20;
+        }
         Dimension dimension = new Dimension(width, height);
         component.setMinimumSize(dimension);
         component.setPreferredSize(dimension);
         component.setMaximumSize(dimension);
-        component.setAlignmentX(Component.LEFT_ALIGNMENT);
+        component.setAlignmentX(Component.CENTER_ALIGNMENT);
 
     }
 

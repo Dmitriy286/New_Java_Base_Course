@@ -22,18 +22,16 @@ public class MainJFrame extends JFrame {
 
     ArrayList<Point> pointsList;
     ArrayList<Figure> figureJSONList;
-    ArrayList<Figure> tempFigureList = new ArrayList<>();
-    JSON_Serialization jsn = new JSON_Serialization();
+    ArrayList<Figure> tempFigureList;
+    JSON_Serialization jsn;
     Figure changedFigure;
 
-    boolean choiceFigureButtonFlag = false;
-    MainLeftBox leftBox = new MainLeftBox(BoxLayout.Y_AXIS);
-
-    LeftCreatingBox leftCreatingBox = new LeftCreatingBox(BoxLayout.Y_AXIS, this);
-    LeftOperationsBox leftOperationsBox = new LeftOperationsBox(BoxLayout.Y_AXIS);
-    LeftScalingBox leftScalingBox = new LeftScalingBox(BoxLayout.Y_AXIS);
-    LeftRotatingBox leftRotatingBox = new LeftRotatingBox(BoxLayout.Y_AXIS);
-    LeftMovingBox leftMovingBox = new LeftMovingBox(BoxLayout.Y_AXIS);
+    MainLeftBox leftBox;
+    LeftCreatingBox leftCreatingBox;
+    LeftOperationsBox leftOperationsBox;
+    LeftScalingBox leftScalingBox;
+    LeftRotatingBox leftRotatingBox;
+    LeftMovingBox leftMovingBox;
 
     JFigureDrawing drawedFigures;
 
@@ -43,6 +41,8 @@ public class MainJFrame extends JFrame {
 
     UserConsole uc;
 
+    boolean choiceFigureButtonFlag;
+
 
     public MainJFrame () throws IOException {
         super("Как тебе такое, Илон Маск?");
@@ -51,6 +51,17 @@ public class MainJFrame extends JFrame {
 
         creator = new FigureCreator();
         listModel = new DefaultListModel();
+        tempFigureList = new ArrayList<>();
+        jsn = new JSON_Serialization();
+
+        leftBox = new MainLeftBox(BoxLayout.Y_AXIS);
+        leftCreatingBox = new LeftCreatingBox(BoxLayout.Y_AXIS, this);
+        leftOperationsBox = new LeftOperationsBox(BoxLayout.Y_AXIS);
+        leftScalingBox = new LeftScalingBox(BoxLayout.Y_AXIS);
+        leftRotatingBox = new LeftRotatingBox(BoxLayout.Y_AXIS);
+        leftMovingBox = new LeftMovingBox(BoxLayout.Y_AXIS);
+
+        choiceFigureButtonFlag = false;
 
         GridBagLayout gbl = new GridBagLayout();
         this.setLayout(gbl);
@@ -94,16 +105,13 @@ public class MainJFrame extends JFrame {
 
         uc = new UserConsole(BoxLayout.Y_AXIS);
 
-//        uc.setVisible(true);
-//        uc.setMinimumSize(new Dimension((int) (leftBasePanel.getWidth() / 1.2), 100));
-//        uc.setPreferredSize(new Dimension((int) (leftBasePanel.getWidth() / 1.2), 100));
-//        uc.setMaximumSize(new Dimension((int) (leftBasePanel.getWidth() / 1.2), 100));
-
-
-        leftBasePanel.add(uc, BorderLayout.NORTH);
+        leftBasePanel.setLayout(new BoxLayout(leftBasePanel, BoxLayout.Y_AXIS));
+        leftBasePanel.add(uc);
+//        uc.setAlignmentX(Component.CENTER_ALIGNMENT);
         uc.consolePrinting("Бобро пожаловать!");
 
-        leftBasePanel.add(leftBox, BorderLayout.CENTER);
+        leftBasePanel.add(leftBox);
+//        leftBox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         path = "Figure JSON file.json";
         figureJSONList = new ArrayList<>();
@@ -135,7 +143,7 @@ public class MainJFrame extends JFrame {
 
         leftBox.createFigureButton.addActionListener(e -> {
             leftBasePanel.remove(leftBox);
-            leftBasePanel.add(leftCreatingBox, BorderLayout.WEST);
+            leftBasePanel.add(leftCreatingBox);
             uc.clearConsole();
             System.out.println("Создайте фигуру");
             uc.consolePrinting("Создайте фигуру");
@@ -161,7 +169,7 @@ public class MainJFrame extends JFrame {
             String str = Integer.toString(figureJSONList.size());
             uc.clearConsole();
             uc.consolePrinting(str);
-            uc.consolePrinting("Тест консоли");
+            uc.consolePrinting("На панели отображены все созданные фигуры");
             drawedFigures.repaintFigures(figureJSONList);
             revalidate();
             repaint();
@@ -174,13 +182,9 @@ public class MainJFrame extends JFrame {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            for (var figure: figureJSONList) {
-                tempFigureList.add(figure);
-            }
+            tempFigureList.addAll(figureJSONList);
             figureJSONList.clear();
             drawedFigures.repaintFigures(figureJSONList);
-            drawedFigures.revalidate();
-            drawedFigures.repaint();
             revalidate();
             repaint();
         });
@@ -189,7 +193,6 @@ public class MainJFrame extends JFrame {
             choiceFigureButtonFlag = true;
             leftBasePanel.remove(leftBox);
             leftBasePanel.add(leftOperationsBox, BorderLayout.WEST);
-
             revalidate();
             repaint();
         });
@@ -200,7 +203,6 @@ public class MainJFrame extends JFrame {
             String point = leftCreatingBox.coordinateXTextField.getText()
                     + ";" + leftCreatingBox.coordinateYTextField.getText();
             listModel.add(listModel.getSize(), point);
-
             leftCreatingBox.pointList.setModel(listModel);
             leftCreatingBox.coordinateXTextField.setText("");
             leftCreatingBox.coordinateYTextField.setText("");
@@ -221,7 +223,6 @@ public class MainJFrame extends JFrame {
             tempArrayList.add(newFigure);
             drawedFigures.repaintFigures(tempArrayList);
             listModel.removeAllElements();
-
             revalidate();
             repaint();
         });
@@ -389,9 +390,9 @@ public class MainJFrame extends JFrame {
         });
 
         leftOperationsBox.moveFigureButton.addActionListener(e -> {
-            System.out.println("Тест кнопки перемещение" + defineFigure.foundFigure);
             uc.clearConsole();
-            uc.consolePrinting("Выбранная фигура: \n" + figureJSONList.get(defineFigure.index).getClass().getSimpleName());
+            uc.consolePrinting("Выбранная фигура: \n" + figureJSONList.get(defineFigure.index).getClass().getSimpleName()
+            + "\n" + "Переместите фигуру стрелками");
             System.out.println("Выбранная фигура: " + figureJSONList.get(defineFigure.index));
             leftBasePanel.remove(leftOperationsBox);
             leftBasePanel.add(leftMovingBox, BorderLayout.WEST);
@@ -401,16 +402,12 @@ public class MainJFrame extends JFrame {
         });
 
         leftMovingBox.moveUpButton.addActionListener(e -> {
-
             ArrayList<Figure> tempFigureList = new ArrayList();
             changedFigure = figureJSONList.get(defineFigure.index).move(5, 1);
-
             tempFigureList.add(changedFigure);
             drawedFigures.repaintFigures(tempFigureList);
-
             revalidate();
             repaint();
-
         });
 
         leftMovingBox.moveDownButton.addActionListener(e -> {
@@ -418,7 +415,6 @@ public class MainJFrame extends JFrame {
             changedFigure = figureJSONList.get(defineFigure.index).move(5, 2);
             tempFigureList.add(changedFigure);
             drawedFigures.repaintFigures(tempFigureList);
-
             revalidate();
             repaint();
         });
@@ -428,7 +424,6 @@ public class MainJFrame extends JFrame {
             changedFigure = figureJSONList.get(defineFigure.index).move(5, 3);
             tempFigureList.add(changedFigure);
             drawedFigures.repaintFigures(tempFigureList);
-
             revalidate();
             repaint();
         });
@@ -438,7 +433,6 @@ public class MainJFrame extends JFrame {
             changedFigure = figureJSONList.get(defineFigure.index).move(5, 4);
             tempFigureList.add(changedFigure);
             drawedFigures.repaintFigures(tempFigureList);
-
             revalidate();
             repaint();
         });
@@ -452,7 +446,6 @@ public class MainJFrame extends JFrame {
                 ex.printStackTrace();
             }
             drawedFigures.repaintFigures(figureJSONList);
-
             revalidate();
             repaint();
         });
@@ -462,7 +455,8 @@ public class MainJFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 leftBasePanel.remove(leftMovingBox);
                 leftBasePanel.add(leftOperationsBox, BorderLayout.WEST);
-
+                uc.clearConsole();
+                uc.consolePrinting("Выбор фигур");
                 revalidate();
                 repaint();
             }
@@ -476,7 +470,6 @@ public class MainJFrame extends JFrame {
                 ex.printStackTrace();
             }
             drawedFigures.repaintFigures(figureJSONList);
-
             revalidate();
             repaint();
         });
@@ -484,7 +477,8 @@ public class MainJFrame extends JFrame {
         leftOperationsBox.cancellChoice.addActionListener(e -> {
         drawedFigures.repaintFigures(figureJSONList);
         defineFigure = null;
-//        defineFigure.foundFigure.clear();
+        uc.clearConsole();
+        uc.consolePrinting("Выбор фигур");
         revalidate();
         repaint();
         });
@@ -495,15 +489,12 @@ public class MainJFrame extends JFrame {
                 choiceFigureButtonFlag = false;
                 leftBasePanel.remove(leftOperationsBox);
                 leftBasePanel.add(leftBox, BorderLayout.WEST);
-
                 revalidate();
                 repaint();
             }
         });
 
-
         setLocation(400,0);
-//        pack();
         setVisible(true);
     }
 
@@ -521,9 +512,5 @@ public class MainJFrame extends JFrame {
     public Figure getNewFigure() {
         return this.newFigure;
     }
-
-//    public void frameRepaint() {
-//        this.repaint();
-//    }
 
 }

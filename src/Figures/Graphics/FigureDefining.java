@@ -3,7 +3,6 @@ package Figures.Graphics;
 import Figures.Circle;
 import Figures.Figure;
 import Figures.Point;
-import org.mortbay.jetty.Main;
 
 import java.util.ArrayList;
 
@@ -47,13 +46,12 @@ public class FigureDefining {
         mainLinePoints.add(this.point);
         Point point2 = new Point(findMaxX(), this.point.getY());
         mainLinePoints.add(point2);
-
         return mainLinePoints;
     }
 
     public double findMaxX() {
-        ArrayList<Point> pointsList = this.pointsList;
-        ArrayList<Point> newPointsList = multiplicate(pointsList);
+//        ArrayList<Point> pointsList = this.pointsList;
+//        ArrayList<Point> newPointsList = multiplicate(pointsList);
         double maxX = this.pointsList.get(0).getX();
         for (var figure: this.figureList) {
             for (var point: multiplicate(figure.getPointsList())) {
@@ -84,16 +82,16 @@ public class FigureDefining {
     }
 
     public int areCrossedLines(ArrayList<Point> mainLinePoints, ArrayList<Point> sideLinePoints) {
-        double mainXCoordinateOne = mainLinePoints.get(0).getX(); //x1
-        double mainXCoordinateTwo = mainLinePoints.get(1).getX(); //x2
-        double mainYCoordinateOne = mainLinePoints.get(0).getY(); //y1
-        double mainYCoordinateTwo = mainLinePoints.get(1).getY(); //y2
+        double mainXCoordinateOne = mainLinePoints.get(0).getX();
+        double mainXCoordinateTwo = mainLinePoints.get(1).getX();
+        double mainYCoordinateOne = mainLinePoints.get(0).getY();
+        double mainYCoordinateTwo = mainLinePoints.get(1).getY();
 
-        double sideXCoordinateOne = Math.min(sideLinePoints.get(0).getX(), sideLinePoints.get(1).getX()); //x3
-        double sideXCoordinateTwo = Math.max(sideLinePoints.get(0).getX(), sideLinePoints.get(1).getX());  //x4
+        double sideXCoordinateOne = Math.min(sideLinePoints.get(0).getX(), sideLinePoints.get(1).getX());
+        double sideXCoordinateTwo = Math.max(sideLinePoints.get(0).getX(), sideLinePoints.get(1).getX());
 
         double sideYCoordinateOne = (sideXCoordinateOne == sideLinePoints.get(0).getX())
-                ? sideLinePoints.get(0).getY() : sideLinePoints.get(1).getY(); //y3
+                ? sideLinePoints.get(0).getY() : sideLinePoints.get(1).getY();
         double sideYCoordinateTwo = (sideXCoordinateTwo == sideLinePoints.get(1).getX())
                 ? sideLinePoints.get(1).getY() : sideLinePoints.get(0).getY();
 
